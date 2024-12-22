@@ -1,0 +1,3 @@
+{ int A80sd, B12aadsac; 80 }
+{ sgdisoighio; }
+{ int A80asd, B12aadsac; 80 }

@@ -1,0 +1,8 @@
+{
+a ass b;
+int a;
+bool b;
+float c;
+write ( ab );
+read ( c );
+}

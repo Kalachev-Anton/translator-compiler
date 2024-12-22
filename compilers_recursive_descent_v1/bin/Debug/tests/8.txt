@@ -1,0 +1,13 @@
+{
+int a, b;
+bool c;
+float d;
+int a1, b2, c3, d4, f5, e8, x11, a8;
+a ass b + 4;
+write ( d );
+read ( a, b );
+a1 ass b2 * a1;
+if c3 * 5 = 15 then d4 ass 4 else a + 10;
+for f5 = 7 to e8 * 4 + 2 do read ( a1 );
+while x11 > 0 do read ( a8 );
+}

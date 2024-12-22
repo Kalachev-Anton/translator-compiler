@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "compilers_recursive_descent_v1", "compilers_recursive_descent_v1\compilers_recursive_descent_v1.csproj", "{10B6ECF5-F596-48D0-A851-444C1FAC000C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10B6ECF5-F596-48D0-A851-444C1FAC000C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B6ECF5-F596-48D0-A851-444C1FAC000C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B6ECF5-F596-48D0-A851-444C1FAC000C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B6ECF5-F596-48D0-A851-444C1FAC000C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EE6F7750-AF9F-4F7F-8240-CBA22AA04F48}
+	EndGlobalSection
+EndGlobal

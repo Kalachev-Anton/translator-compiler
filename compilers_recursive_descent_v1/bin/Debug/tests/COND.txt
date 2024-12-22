@@ -1,0 +1,4 @@
+{
+int c3, d4;
+if c3 * 5 = 15 then d4 ass 4;
+}
