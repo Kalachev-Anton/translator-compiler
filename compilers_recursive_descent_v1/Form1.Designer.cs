@@ -1,4 +1,4 @@
-﻿namespace LexicalAnalyzerApp
+﻿namespace recursive_descent_translator_app
 {
     partial class Form1
     {
@@ -20,6 +20,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabMain = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtCsharpMain = new System.Windows.Forms.TextBox();
             this.txtRPNMain = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lstResultsMain = new System.Windows.Forms.ListBox();
@@ -58,11 +61,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lstSemantics = new System.Windows.Forms.ListBox();
             this.tabCodeGeneration = new System.Windows.Forms.TabPage();
+            this.txtCsharpGen = new System.Windows.Forms.TextBox();
             this.txtRPNgen = new System.Windows.Forms.TextBox();
-            this.txtCsharpMain = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabLexicalAnalysis.SuspendLayout();
@@ -110,6 +110,35 @@
             this.tabMain.TabIndex = 0;
             this.tabMain.Text = "Главная";
             this.tabMain.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(636, 43);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(137, 13);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "Сгенерированный код C#";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(306, 43);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(76, 13);
+            this.label10.TabIndex = 25;
+            this.label10.Text = "ПолИЗ / ОПЗ";
+            // 
+            // txtCsharpMain
+            // 
+            this.txtCsharpMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtCsharpMain.Location = new System.Drawing.Point(639, 59);
+            this.txtCsharpMain.Multiline = true;
+            this.txtCsharpMain.Name = "txtCsharpMain";
+            this.txtCsharpMain.ReadOnly = true;
+            this.txtCsharpMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCsharpMain.Size = new System.Drawing.Size(500, 309);
+            this.txtCsharpMain.TabIndex = 24;
             // 
             // txtRPNMain
             // 
@@ -469,7 +498,7 @@
             // 
             // tabCodeGeneration
             // 
-            this.tabCodeGeneration.Controls.Add(this.textBox1);
+            this.tabCodeGeneration.Controls.Add(this.txtCsharpGen);
             this.tabCodeGeneration.Controls.Add(this.txtRPNgen);
             this.tabCodeGeneration.Location = new System.Drawing.Point(4, 22);
             this.tabCodeGeneration.Name = "tabCodeGeneration";
@@ -477,6 +506,17 @@
             this.tabCodeGeneration.TabIndex = 4;
             this.tabCodeGeneration.Text = "Генерация кода";
             this.tabCodeGeneration.UseVisualStyleBackColor = true;
+            // 
+            // txtCsharpGen
+            // 
+            this.txtCsharpGen.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtCsharpGen.Location = new System.Drawing.Point(530, 45);
+            this.txtCsharpGen.Multiline = true;
+            this.txtCsharpGen.Name = "txtCsharpGen";
+            this.txtCsharpGen.ReadOnly = true;
+            this.txtCsharpGen.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCsharpGen.Size = new System.Drawing.Size(500, 309);
+            this.txtCsharpGen.TabIndex = 25;
             // 
             // txtRPNgen
             // 
@@ -488,46 +528,6 @@
             this.txtRPNgen.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtRPNgen.Size = new System.Drawing.Size(521, 309);
             this.txtRPNgen.TabIndex = 24;
-            // 
-            // txtCsharpMain
-            // 
-            this.txtCsharpMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtCsharpMain.Location = new System.Drawing.Point(639, 59);
-            this.txtCsharpMain.Multiline = true;
-            this.txtCsharpMain.Name = "txtCsharpMain";
-            this.txtCsharpMain.ReadOnly = true;
-            this.txtCsharpMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCsharpMain.Size = new System.Drawing.Size(500, 309);
-            this.txtCsharpMain.TabIndex = 24;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(306, 43);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(76, 13);
-            this.label10.TabIndex = 25;
-            this.label10.Text = "ПолИЗ / ОПЗ";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(636, 43);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(137, 13);
-            this.label11.TabIndex = 26;
-            this.label11.Text = "Сгенерированный код C#";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(530, 45);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(500, 309);
-            this.textBox1.TabIndex = 25;
             // 
             // Form1
             // 
@@ -595,6 +595,6 @@
         private System.Windows.Forms.TextBox txtCsharpMain;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtCsharpGen;
     }
 }

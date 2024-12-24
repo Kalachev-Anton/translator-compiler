@@ -1,4 +1,4 @@
-﻿using LexicalAnalyzerApp;
+﻿using recursive_descent_translator_app;
 using System;
 using System.Windows.Forms;
 

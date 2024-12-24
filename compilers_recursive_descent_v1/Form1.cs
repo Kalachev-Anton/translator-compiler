@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace LexicalAnalyzerApp
+namespace recursive_descent_translator_app
 {
     public partial class Form1 : Form
     {
@@ -209,6 +209,42 @@ namespace LexicalAnalyzerApp
 
                     lstResultsMain.Items.Add("4. Формирование ПолИЗ'а (ОПЗ) завершено. Проверьте есть ли ошибки.");
 
+
+
+
+
+
+
+                    // Генерация кода
+
+                    string ConvertToCSharp = noCommentCode;
+
+
+                    ConvertToCSharp = ConvertToCSharp.Replace("}", "}\r\n}");
+                    ConvertToCSharp = ConvertToCSharp.Replace("=", "==");
+                    ConvertToCSharp = ConvertToCSharp.Replace("ass", "=");
+
+                    // Добавляем библиотеки в начале
+                    ConvertToCSharp = ConvertToCSharp.Replace("{", "using System;\r\n" +
+                        "using System.IO;\r\n\r\n" +
+                        "class Program\r\n" +
+                        "{\r\n    " +
+                        "static void Main()\r\n    " +
+                        "{");
+
+                    ConvertToCSharp = ConvertToCSharp.Replace("write (", "Console.Write(");
+                    ConvertToCSharp = ConvertToCSharp.Replace("read (", "Console.Read(");
+                    ConvertToCSharp = ConvertToCSharp.Replace("if", "if (");
+                    ConvertToCSharp = ConvertToCSharp.Replace("then", ") ");
+                    ConvertToCSharp = ConvertToCSharp.Replace("else", "; else ");
+                    ConvertToCSharp = ConvertToCSharp.Replace("for", "for (;");
+                    ConvertToCSharp = ConvertToCSharp.Replace("to", ";");
+                    ConvertToCSharp = ConvertToCSharp.Replace("do", ") ");
+                    ConvertToCSharp = ConvertToCSharp.Replace("while", "while (");
+
+
+
+                    txtCsharpMain.Text = ConvertToCSharp;
                 }
                 catch (Exception ex)
                 {
@@ -2401,6 +2437,12 @@ namespace LexicalAnalyzerApp
 
 
 
+
+
+
+
+
+            
 
 
 
