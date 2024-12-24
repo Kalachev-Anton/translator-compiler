@@ -35,6 +35,19 @@ namespace recursive_descent_translator_app
                     Clipboard.SetText(copy_buffer.ToString());
             }
         }
+        private void lstSemantics_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                System.Text.StringBuilder copy_buffer = new System.Text.StringBuilder();
+                foreach (object item in lstSyntax.SelectedItems)
+                    copy_buffer.AppendLine(item.ToString());
+                if (copy_buffer.Length > 0)
+                    Clipboard.SetText(copy_buffer.ToString());
+            }
+        }
+
+        //Скопировать содержимое из listBox в textBox для более удобной работы
         private void buttonCopyListToBox_Click(object sender, EventArgs e)
         {
             // Собираем все элементы из ListBox в одну строку
@@ -43,14 +56,13 @@ namespace recursive_descent_translator_app
             // Устанавливаем собранный текст в TextBox
             richTextSyntax.Text = allItems;
         }
-
-
-
-
+        
+        // Главная кнопка трансляции и анализа
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
             bool hasError = false; // Флаг для отслеживания ошибок
 
+            // Очистка всех элементов перед началом анализа и трансляции
             lstKeywordsLex.Items.Clear();
             lstKeywordsMain.Items.Clear();
             lstSeparatorsLex.Items.Clear();
@@ -60,17 +72,15 @@ namespace recursive_descent_translator_app
             lstConstantsLex.Items.Clear();
             lstConstantsMain.Items.Clear();
             lstResultsMain.Items.Clear();
-
             lstSyntax.Items.Clear();
             lstSemantics.Items.Clear();
-
             uniqueKeywords.Clear();
             uniqueSeparators.Clear();
             uniqueVariables.Clear();
             uniqueConstants.Clear();
+            txtCsharpGen.Clear();
 
-
-
+            // Начало лексического анализа
             try
             {
                 string inputCode = txtInputMain.Text;
@@ -95,8 +105,7 @@ namespace recursive_descent_translator_app
                 lstResultsMain.Items.Add("1. Лексический анализ завершен. Проверьте есть ли ошибки.");
 
 
-
-                // Синтаксис
+                // Начало синтаксического анализа
                 string input = noCommentCode;
 
                 try
@@ -116,10 +125,7 @@ namespace recursive_descent_translator_app
                         lstResultsMain.Items.Add("Ошибка синтаксического анализа.");
                     }
 
-
-
-                    // Семантика
-                    // Семантика
+                    // Начало семантического анализа
                     inputCode = noCommentCode;
                     List<string> semantics = new List<string>(); // Список для промежуточных результатов
                     List<string> results = new List<string>();   // Список для результатов
@@ -155,9 +161,6 @@ namespace recursive_descent_translator_app
                                 hasError = true;
                             }
                         }
-
-
-
                     }
                     catch (Exception ex)
                     {
@@ -180,18 +183,7 @@ namespace recursive_descent_translator_app
                         lstResultsMain.Items.Add("3. Семантический анализ завершен успешно.");
                     }
 
-
-
-
-
-
-
-                    //// ПолИЗ ОПЗ
-                    //var converter = new CodeToRPNConverter(lstVariablesMain, lstConstantsMain);
-                    //converter.ConvertToRPN(noCommentCode, txtRPNMain, txtRPNgen);
-
-
-
+                    // Генерация ПолИЗ'а / ОПЗ
 
                     List<string> intermediateSteps = new List<string>();
 
@@ -209,31 +201,27 @@ namespace recursive_descent_translator_app
 
                     lstResultsMain.Items.Add("4. Формирование ПолИЗ'а (ОПЗ) завершено. Проверьте есть ли ошибки.");
 
-
-
-
-
-
-
-                    // Генерация кода
+                    // Генерация кода на C#
+                    txtCsharpGen.Text += "Начало генерации кода.\n\r\n\r";
 
                     string ConvertToCSharp = noCommentCode;
-
-
-                    ConvertToCSharp = ConvertToCSharp.Replace("}", "}\r\n}");
-                    ConvertToCSharp = ConvertToCSharp.Replace("=", "==");
+                    txtCsharpGen.Text += "Добавляем библиотеки и описываем главный метод.\n\r\n\r";
+                    ConvertToCSharp = ConvertToCSharp.Replace("}", "    Console.ReadLine();\r\n    }\r\n}");
+                    ConvertToCSharp = ConvertToCSharp.Replace(" = ", "==");
+                    ConvertToCSharp = ConvertToCSharp.Replace("<>", "!=");
                     ConvertToCSharp = ConvertToCSharp.Replace("ass", "=");
-
-                    // Добавляем библиотеки в начале
-                    ConvertToCSharp = ConvertToCSharp.Replace("{", "using System;\r\n" +
+                    ConvertToCSharp = ConvertToCSharp.Replace("{", "using System;\r\n\n\r" +
                         "using System.IO;\r\n\r\n" +
                         "class Program\r\n" +
                         "{\r\n    " +
                         "static void Main()\r\n    " +
                         "{");
-
-                    ConvertToCSharp = ConvertToCSharp.Replace("write (", "Console.Write(");
-                    ConvertToCSharp = ConvertToCSharp.Replace("read (", "Console.Read(");
+                    txtCsharpGen.Text += "Главный метод оформлен. Проставлены все { и }\n\r\n\r";
+                    ConvertToCSharp = ConvertToCSharp.Replace("write (", "Console.WriteLine(");
+                    txtCsharpGen.Text += "Трансформируем write в Console.WriteLine\n\r\n\r";
+                    ConvertToCSharp = ConvertToCSharp.Replace("read (", "");
+                    ConvertToCSharp = ConvertToCSharp.Replace(")  ;", "= int.Parse(Console.ReadLine());");
+                    txtCsharpGen.Text += "Трансформируем read в int.Parse(Console.ReadLine())\n\r\n\r";
                     ConvertToCSharp = ConvertToCSharp.Replace("if", "if (");
                     ConvertToCSharp = ConvertToCSharp.Replace("then", ") ");
                     ConvertToCSharp = ConvertToCSharp.Replace("else", "; else ");
@@ -241,9 +229,12 @@ namespace recursive_descent_translator_app
                     ConvertToCSharp = ConvertToCSharp.Replace("to", ";");
                     ConvertToCSharp = ConvertToCSharp.Replace("do", ") ");
                     ConvertToCSharp = ConvertToCSharp.Replace("while", "while (");
+                    txtCsharpGen.Text += "Условие if then else сформировано.\n\r\n\r";
+                    txtCsharpGen.Text += "Цикл for преобразован.\n\r\n\r";
+                    txtCsharpGen.Text += "Цикл while преобразован.\n\r\n\r";
 
-
-
+                    // Вывод результата
+                    lstResultsMain.Items.Add("5. Генерация кода на C# завернеша. Проверьте есть ли ошибки.");
                     txtCsharpMain.Text = ConvertToCSharp;
                 }
                 catch (Exception ex)
@@ -257,9 +248,7 @@ namespace recursive_descent_translator_app
             }
         }
 
-
-
-
+        // Разбиение кода на блоки
         private List<Block> ParseProgram(string inputCode)
         {
             // Разбиение кода на блоки по строкам
@@ -274,7 +263,7 @@ namespace recursive_descent_translator_app
             return blocks;
         }
 
-
+        // Кнопка заглузки текста из файла
         private void btnLoadFile_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -301,11 +290,13 @@ namespace recursive_descent_translator_app
 
 
         // Начало блока лексического анализа
+        // Убрать строки с комментариями
         private static string RemoveComments(string code)
         {
             return Regex.Replace(code, @"//.*?\n|/\*.*?\*/", "\n", RegexOptions.Singleline);
         }
 
+        // Формирование таблиц K1-4
         private static List<Tuple<string, int>> AnalyzeLexemes(string code, Form1 form)
         {
             List<Tuple<string, int>> lexemes = new List<Tuple<string, int>>();
@@ -398,15 +389,10 @@ namespace recursive_descent_translator_app
                     form.lstResultsMain.Items.Add($"Ошибка: Незафиксированный символ '{c}' на позиции {code.IndexOf(c) + 1}");
                 }
             }
-
             return lexemes;
         }
 
-
-
-
-
-
+        // Вспомогательный метод
         private static int GetOrAddLexeme(string lexeme, List<string> lexemeList)
         {
             int index = lexemeList.IndexOf(lexeme);
@@ -418,6 +404,7 @@ namespace recursive_descent_translator_app
             return index;
         }
 
+        // Восстановление текста из дескрипторов
         private static string RecoverCode(List<Tuple<string, int>> lexemes)
         {
             string recoveredCode = "";
@@ -443,6 +430,8 @@ namespace recursive_descent_translator_app
             }
             return recoveredCode.Trim();
         }
+
+        // Отобразить дескрипторный текст
         private void DisplayDescriptorText(List<Tuple<string, int>> lexemes)
         {
             txtDescriptor.Clear();
@@ -452,6 +441,7 @@ namespace recursive_descent_translator_app
             }
         }
 
+        //Отображение таблиц K1-4 на вкладках Главная и Лексический анализ
         private void DisplayLexemeTables()
         {
             lstKeywordsLex.Items.Clear();
@@ -484,20 +474,7 @@ namespace recursive_descent_translator_app
 
             foreach (var constant in uniqueConstants)
                 lstConstantsLex.Items.Add(constant);
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
 
         // Начало блока синтаксического анализа
         // Главная функция парсинга для PR
@@ -520,7 +497,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
         // Разбор BL1
         private bool ParseBL1(string input)
         {
@@ -539,10 +515,7 @@ namespace recursive_descent_translator_app
             return true;
         }
 
-
-
-
-
+        // Разбор BL2
         private bool ParseBL2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BL2...");
@@ -585,8 +558,7 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка синтаксического анализа в BL2.");
         }
 
-
-
+        // Разбор BL3
         private bool ParseBL3(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BL3...");
@@ -627,18 +599,6 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка синтаксического анализа в BL3.");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         // Разбор DESC
         private bool ParseDESC(string input)
         {
@@ -666,14 +626,6 @@ namespace recursive_descent_translator_app
             // Допустимые типы (например, int, bool и т.д.)
             return input == "int" || input == "bool" || input == "float";
         }
-
-
-
-
-
-
-
-
 
         // Разбор ID1
         private bool ParseID1(string input)
@@ -703,7 +655,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
         // Парсинг ID2
         private bool ParseID2(string input)
         {
@@ -711,9 +662,6 @@ namespace recursive_descent_translator_app
             return ParseID1(input); // ID2 имеет ту же структуру
         }
 
-
-
-        // Разбор OPRT
         // Разбор OPRT
         private bool ParseOPRT(string input)
         {
@@ -782,6 +730,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseAsg
         private bool TryParseAsg(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^(?<ID>[a-zA-Z][a-zA-Z0-9]*)\s*ass\s*(?<XPR>.+)$";
@@ -810,6 +759,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseCond
         private bool TryParseCond(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^if\s*(?<XPR>.+?)\s*then\s*(?<OPRT>.+?)\s*(else\s*(?<COND>.+))?$";
@@ -839,6 +789,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseFcyc
         private bool TryParseFcyc(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^for\s*(?<ASG>.+?)\s*to\s*(?<XPR>.+?)\s*do\s*(?<OPRT>.+)$";
@@ -868,6 +819,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseLoop
         private bool TryParseLoop(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^while\s*(?<XPR>.+?)\s*do\s*(?<OPRT>.+)$";
@@ -896,6 +848,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseRd
         private bool TryParseRd(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^read\s*\(\s*(?<ID>[a-zA-Z][a-zA-Z0-9]*)(\s*(,\s*(?<ID2>[a-zA-Z][a-zA-Z0-9]*))*)?\s*\)$";
@@ -924,6 +877,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Вспомагалельный парсер TryParseWrt
         private bool TryParseWrt(string input, ref string lastType, ref string lastOperator)
         {
             string pattern = @"^write\s*\(\s*(?<XPR>.+?)(\s*(,\s*(?<XPR2>.+?))*)?\s*\)$";
@@ -985,19 +939,6 @@ namespace recursive_descent_translator_app
                 return false;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Метод для парсинга списка ID, разделённых запятыми
         private bool ParseIDList(string input)
@@ -1072,15 +1013,6 @@ namespace recursive_descent_translator_app
             }
         }
 
-
-
-
-
-
-
-
-
-
         // Разбор ASG
         private bool ParseASG(string input)
         {
@@ -1108,9 +1040,6 @@ namespace recursive_descent_translator_app
             }
             return false;
         }
-
-
-
 
         // Разбор COND
         private bool ParseCOND(string input)
@@ -1148,11 +1077,6 @@ namespace recursive_descent_translator_app
             lstSyntax.Items.Add("Ошибка: Некорректные элементы в COND.");
             return false;
         }
-
-
-
-
-
 
         // Разбор COND1
         private bool ParseCOND1(string input)
@@ -1214,10 +1138,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
-
-
-
         // Разбор LOOP
         private bool ParseLOOP(string input)
         {
@@ -1246,9 +1166,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
-
-
         // Разбор RD
         private bool ParseRD(string input)
         {
@@ -1267,7 +1184,6 @@ namespace recursive_descent_translator_app
             }
             return false;
         }
-
 
         // Разбор RD1
         private bool ParseRD1(string input)
@@ -1356,7 +1272,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
         // Разбор WRT1
         private bool ParseWRT1(string input)
         {
@@ -1419,22 +1334,6 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка: Неверный формат WRT2.");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Разбор LETTER
         private bool ParseLETTER(string input)
         {
@@ -1468,8 +1367,6 @@ namespace recursive_descent_translator_app
         }
 
         // Разбор XPR
-        // Парсинг выражения XPR
-        // Разбор XPR
         private bool ParseXPR(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить XPR...");
@@ -1495,6 +1392,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор XPR1
         private bool ParseXPR1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить XPR1...");
@@ -1524,20 +1422,12 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
-
-
-
-
         // Парсинг XPR2
         private bool ParseXPR2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить XPR2...");
             return ParseXPR1(input); // XPR2 имеет ту же структуру
         }
-
-
-
 
         // Разбор OPRD
         private bool ParseOPRD(string input)
@@ -1616,19 +1506,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Разбор RLSH (операторы сравнения)
         private bool ParseRLSH(string input)
         {
@@ -1644,8 +1521,6 @@ namespace recursive_descent_translator_app
             lstSyntax.Items.Add("Ошибка: Некорректный оператор в RLSH.");
             return false;
         }
-
-
 
         // Разбор TERM (термин)
         private bool ParseTERM(string input)
@@ -1676,7 +1551,6 @@ namespace recursive_descent_translator_app
             lstSyntax.Items.Add("Ошибка: TERM не удалось распарсить.");
             return false;
         }
-
 
         // Разбор TERM1 (операции с MULT)
         private bool ParseTERM1(string input)
@@ -1750,8 +1624,6 @@ namespace recursive_descent_translator_app
             return false;
         }
 
-
-
         // Разбор MULT (множитель)
         private bool ParseMULT(string input)
         {
@@ -1777,7 +1649,6 @@ namespace recursive_descent_translator_app
             lstSyntax.Items.Add("Ошибка: MULT не удалось распарсить.");
             return false;
         }
-
 
         // Разбор OPMULT (операции умножения)
         private bool ParseOPMULT(string input)
@@ -1809,9 +1680,6 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка: Неопознанное число.");
         }
 
-
-
-
         // Разбор LGCONST (логическая константа)
         private bool ParseLGCONST(string input)
         {
@@ -1839,17 +1707,6 @@ namespace recursive_descent_translator_app
 
             throw new Exception("Ошибка: Не является унарным оператором.");
         }
-
-
-
-
-
-
-
-
-
-
-
 
         // Разбор INT (целое число)
         private bool ParseINT(string input)
@@ -1883,6 +1740,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор BIN1
         private bool ParseBIN1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BIN1...");
@@ -1895,6 +1753,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор BIN2
         private bool ParseBIN2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BIN2...");
@@ -1906,6 +1765,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
+        // Разбор BIN3
         private bool ParseBIN3(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BIN3...");
@@ -1917,6 +1777,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
+        // Разбор BIN4
         private bool ParseBIN4(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить BIN4...");
@@ -1942,6 +1803,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор OCT1
         private bool ParseOCT1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить OCT1...");
@@ -1949,6 +1811,7 @@ namespace recursive_descent_translator_app
             return "01234567".Contains(input[0]);
         }
 
+        // Разбор OCT2
         private bool ParseOCT2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить OCT2...");
@@ -1960,6 +1823,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
+        // Разбор OCT3
         private bool ParseOCT3(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить OCT3...");
@@ -1967,6 +1831,7 @@ namespace recursive_descent_translator_app
             return input.Length > 0 && "01234567".Contains(input[0]);
         }
 
+        // Разбор OCT4
         private bool ParseOCT4(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить OCT4...");
@@ -1992,6 +1857,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор DEC1
         private bool ParseDEC1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить DEC1...");
@@ -1999,6 +1865,7 @@ namespace recursive_descent_translator_app
             return Char.IsDigit(input[0]);
         }
 
+        // Разбор DEC2
         private bool ParseDEC2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить DEC2...");
@@ -2010,6 +1877,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
+        // Разбор DEC3
         private bool ParseDEC3(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить DEC3...");
@@ -2021,6 +1889,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
+        // Разбор DEC4
         private bool ParseDEC4(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить DEC4...");
@@ -2046,6 +1915,7 @@ namespace recursive_descent_translator_app
             return false;
         }
 
+        // Разбор HEX1
         private bool ParseHEX1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить HEX1...");
@@ -2053,6 +1923,7 @@ namespace recursive_descent_translator_app
             return Char.IsDigit(input[0]) || "ABCDEFabcdef".Contains(input[0]);
         }
 
+        // Разбор HEX2
         private bool ParseHEX2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить HEX2...");
@@ -2060,6 +1931,7 @@ namespace recursive_descent_translator_app
             return Char.IsDigit(input[0]) || "ABCDEFabcdef".Contains(input[0]);
         }
 
+        // Разбор HEX3
         private bool ParseHEX3(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить HEX3...");
@@ -2114,6 +1986,7 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка: Не строка чисел.");
         }
 
+        // Разбор NUMBSTR1
         private bool ParseNUMBSTR1(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить NUMBSTR1...");
@@ -2125,9 +1998,7 @@ namespace recursive_descent_translator_app
             return true; // eps
         }
 
-
-
-
+        // Разбор NUMBSTR2
         private bool ParseNUMBSTR2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить NUMBSTR2...");
@@ -2155,6 +2026,7 @@ namespace recursive_descent_translator_app
             throw new Exception("Ошибка: Не является корректным порядком.");
         }
 
+        // Разбор ORDER2
         private bool ParseORDER2(string input)
         {
             lstSyntax.Items.Add("Пытаемся распарсить ORDER2...");
@@ -2192,13 +2064,8 @@ namespace recursive_descent_translator_app
             return false; // eps
         }
 
-
-
-
-
-
-
-
+        // Начало генерации ОПЗ
+        // Токенизация (разделение на отдельные элементы)
         private List<string> Tokenize(string line)
         {
             List<string> tokens = new List<string>();
@@ -2240,16 +2107,19 @@ namespace recursive_descent_translator_app
             return tokens;
         }
 
+        // Является ли переменной или константой
         private bool IsVariableOrConstant(string token)
         {
             return lstVariablesMain.Items.Contains(token) || lstConstantsMain.Items.Contains(token);
         }
 
+        // Является ли оператором (разделетели)
         private bool IsOperator(string token)
         {
             return separators.Contains(token) && (token == "+" || token == "-" || token == "*" || token == "/" || token == "=" || token == "<>" || token == "<" || token == ">" || token == "<=" || token == ">=" || token == "or" || token == "and" || token == "not");
         }
 
+        // Определение приоритетов
         private int Precedence(string operatorToken)
         {
             switch (operatorToken)
@@ -2277,6 +2147,7 @@ namespace recursive_descent_translator_app
             }
         }
 
+        // Генерация ОПЗ
         private string GenerateRPN(List<string> tokens, List<string> intermediateSteps)
         {
             Stack<string> operators = new Stack<string>(); // Стек для операторов
@@ -2426,35 +2297,8 @@ namespace recursive_descent_translator_app
 
             return string.Join(" ", output); // Возвращаем строку ОПЗ
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-
-
     }
 }
-
-
-
-
-
-
 
 // Класс для семантического анализа
 public class SemanticAnalyzer

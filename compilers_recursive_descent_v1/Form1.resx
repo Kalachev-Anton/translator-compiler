@@ -126,4 +126,37 @@
 5. Взаимодействие разных типов переменных запрещено.
 6. В одной строке может быть только 1 из комбинаций символов &lt;&gt; | = | &lt; | &lt;= | &gt; | &gt;=</value>
   </data>
+  <data name="label13.Text" xml:space="preserve">
+    <value>PR = &lt;программа&gt; 
+DESC = &lt;описание&gt;
+OPRT = &lt;оператор&gt;
+TYPE = &lt;тип&gt;
+ID = &lt;идентификатор&gt;
+ASG = &lt;присваивание&gt;
+XPR = &lt;выражение&gt;
+COND = &lt;условный&gt;
+FCYC = &lt;фиксированного_цикла&gt;
+LOOP = &lt;условного_цикла&gt;
+RD = &lt;ввода&gt;
+WRT = &lt;вывода&gt;
+RLSH = &lt;операции_группы_отношения&gt;
+ADD = &lt;операции_группы_сложения&gt;
+OPRD = &lt;операнд&gt;
+TERM = &lt;слагаемое&gt;
+MULT = &lt;множитель&gt;
+OPMULT = &lt;операции_группы_умножения&gt;
+NMBR = &lt;число&gt;
+INT = &lt;целое&gt;
+REAL = &lt;действительное&gt;
+LGCONST = &lt;логическая_константа&gt;
+UNARY = &lt;унарная_операция&gt;
+LETTER = &lt;буква&gt;
+DIGIT = &lt;цифра&gt;
+NUMBSTR = &lt;числовая_строка&gt;
+ORDER = &lt;порядок&gt;
+BIN = &lt;двоичное&gt;
+OCT = &lt;восьмеричное&gt;
+DEC = &lt;десятичное&gt;
+HEX = &lt;шестнадцатеричное&gt;</value>
+  </data>
 </root>

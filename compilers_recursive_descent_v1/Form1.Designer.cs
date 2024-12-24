@@ -63,6 +63,11 @@
             this.tabCodeGeneration = new System.Windows.Forms.TabPage();
             this.txtCsharpGen = new System.Windows.Forms.TextBox();
             this.txtRPNgen = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabLexicalAnalysis.SuspendLayout();
@@ -430,6 +435,9 @@
             // 
             // tabSyntaxAnalysis
             // 
+            this.tabSyntaxAnalysis.Controls.Add(this.label14);
+            this.tabSyntaxAnalysis.Controls.Add(this.label13);
+            this.tabSyntaxAnalysis.Controls.Add(this.label12);
             this.tabSyntaxAnalysis.Controls.Add(this.buttonCopyListToBox);
             this.tabSyntaxAnalysis.Controls.Add(this.richTextSyntax);
             this.tabSyntaxAnalysis.Controls.Add(this.lstSyntax);
@@ -442,9 +450,9 @@
             // 
             // buttonCopyListToBox
             // 
-            this.buttonCopyListToBox.Location = new System.Drawing.Point(621, 3);
+            this.buttonCopyListToBox.Location = new System.Drawing.Point(913, 17);
             this.buttonCopyListToBox.Name = "buttonCopyListToBox";
-            this.buttonCopyListToBox.Size = new System.Drawing.Size(210, 70);
+            this.buttonCopyListToBox.Size = new System.Drawing.Size(226, 56);
             this.buttonCopyListToBox.TabIndex = 3;
             this.buttonCopyListToBox.Text = "Копировать содержимое\r\nиз listBox\r\nв textBox";
             this.buttonCopyListToBox.UseVisualStyleBackColor = true;
@@ -452,9 +460,9 @@
             // 
             // richTextSyntax
             // 
-            this.richTextSyntax.Location = new System.Drawing.Point(3, 260);
+            this.richTextSyntax.Location = new System.Drawing.Point(3, 336);
             this.richTextSyntax.Name = "richTextSyntax";
-            this.richTextSyntax.Size = new System.Drawing.Size(612, 336);
+            this.richTextSyntax.Size = new System.Drawing.Size(901, 260);
             this.richTextSyntax.TabIndex = 2;
             this.richTextSyntax.Text = "";
             // 
@@ -462,9 +470,9 @@
             // 
             this.lstSyntax.FormattingEnabled = true;
             this.lstSyntax.HorizontalScrollbar = true;
-            this.lstSyntax.Location = new System.Drawing.Point(3, 3);
+            this.lstSyntax.Location = new System.Drawing.Point(3, 19);
             this.lstSyntax.Name = "lstSyntax";
-            this.lstSyntax.Size = new System.Drawing.Size(612, 251);
+            this.lstSyntax.Size = new System.Drawing.Size(904, 251);
             this.lstSyntax.TabIndex = 0;
             // 
             // tabSemanticAnalysis
@@ -498,6 +506,8 @@
             // 
             // tabCodeGeneration
             // 
+            this.tabCodeGeneration.Controls.Add(this.label16);
+            this.tabCodeGeneration.Controls.Add(this.label15);
             this.tabCodeGeneration.Controls.Add(this.txtCsharpGen);
             this.tabCodeGeneration.Controls.Add(this.txtRPNgen);
             this.tabCodeGeneration.Location = new System.Drawing.Point(4, 22);
@@ -510,24 +520,72 @@
             // txtCsharpGen
             // 
             this.txtCsharpGen.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.4F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtCsharpGen.Location = new System.Drawing.Point(530, 45);
+            this.txtCsharpGen.Location = new System.Drawing.Point(589, 16);
             this.txtCsharpGen.Multiline = true;
             this.txtCsharpGen.Name = "txtCsharpGen";
             this.txtCsharpGen.ReadOnly = true;
             this.txtCsharpGen.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCsharpGen.Size = new System.Drawing.Size(500, 309);
+            this.txtCsharpGen.Size = new System.Drawing.Size(550, 580);
             this.txtCsharpGen.TabIndex = 25;
             // 
             // txtRPNgen
             // 
             this.txtRPNgen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.txtRPNgen.Location = new System.Drawing.Point(3, 45);
+            this.txtRPNgen.Location = new System.Drawing.Point(3, 16);
             this.txtRPNgen.Multiline = true;
             this.txtRPNgen.Name = "txtRPNgen";
             this.txtRPNgen.ReadOnly = true;
             this.txtRPNgen.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtRPNgen.Size = new System.Drawing.Size(521, 309);
+            this.txtRPNgen.Size = new System.Drawing.Size(550, 580);
             this.txtRPNgen.TabIndex = 24;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(3, 3);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(510, 13);
+            this.label12.TabIndex = 9;
+            this.label12.Text = "Промежуточные вычисления синтаксического анализатора методом рекурсивного спуска " +
+    "(listBox)";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.Location = new System.Drawing.Point(910, 76);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(229, 403);
+            this.label13.TabIndex = 10;
+            this.label13.Text = resources.GetString("label13.Text");
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 320);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(515, 13);
+            this.label14.TabIndex = 11;
+            this.label14.Text = "Промежуточные вычисления синтаксического анализатора методом рекурсивного спуска " +
+    "(textBox)";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(3, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(279, 13);
+            this.label15.TabIndex = 26;
+            this.label15.Text = "Промежуточные вычисления ОПЗ (ПолИЗ) и его стэк";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(586, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(233, 13);
+            this.label16.TabIndex = 27;
+            this.label16.Text = "Промежуточные этапы генерации кода в C#";
             // 
             // Form1
             // 
@@ -541,6 +599,7 @@
             this.tabLexicalAnalysis.ResumeLayout(false);
             this.tabLexicalAnalysis.PerformLayout();
             this.tabSyntaxAnalysis.ResumeLayout(false);
+            this.tabSyntaxAnalysis.PerformLayout();
             this.tabSemanticAnalysis.ResumeLayout(false);
             this.tabSemanticAnalysis.PerformLayout();
             this.tabCodeGeneration.ResumeLayout(false);
@@ -596,5 +655,10 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtCsharpGen;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
     }
 }
