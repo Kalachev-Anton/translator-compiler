@@ -12,7 +12,7 @@ namespace recursive_descent_translator_app
     public partial class Form1 : Form
     {
         private static List<string> keywords = new List<string> { "int", "float", "bool", "if", "then", "else", "for", "to", "do", "while", "do", "read", "write", "true", "false", "ass" }; // K1
-        private static List<string> separators = new List<string> { "{", "}", "+", "-", "or", "<>", "=", "<", "<=", ">", ">=", "*", "/", "and", "not", ";", ",", "(", ")", "." }; // K2
+        private static List<string> separators = new List<string> { "{", "}", "+", "-", "or", ">=", "<=", "<>", "=", "<", ">", "*", "/", "and", "not", ";", ",", "(", ")", "." }; // K2
 
         private static List<string> uniqueKeywords = new List<string>();
         private static List<string> uniqueSeparators = new List<string>();
@@ -300,7 +300,7 @@ namespace recursive_descent_translator_app
         private static List<Tuple<string, int>> AnalyzeLexemes(string code, Form1 form)
         {
             List<Tuple<string, int>> lexemes = new List<Tuple<string, int>>();
-            string pattern = @"\w+|[;:{}()\[\]+\-*/=<>!,]";
+            string pattern = @"[a-zA-Z0-9]+|>=|<=|[;:{}()\[\]+\-*/=<>!,]";
             MatchCollection matches = Regex.Matches(code, pattern);
 
             foreach (Match match in matches)
@@ -487,7 +487,7 @@ namespace recursive_descent_translator_app
         // Разбор PR
         private bool ParsePR(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить PR...");
+            lstSyntax.Items.Add("Пытаемся распарсить PR → { BL1 } ...");
             if (input.StartsWith("{") && input.EndsWith("}"))
             {
                 string body = input.Substring(1, input.Length - 2).Trim(); // Убираем { и }
@@ -500,7 +500,7 @@ namespace recursive_descent_translator_app
         // Разбор BL1
         private bool ParseBL1(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить BL1...");
+            lstSyntax.Items.Add("Пытаемся распарсить BL1 → DESC; BL2 | OPRT; BL2 ...");
             string[] statements = input.Split(';'); // Разделяем операторы
             foreach (string statement in statements)
             {
@@ -518,7 +518,7 @@ namespace recursive_descent_translator_app
         // Разбор BL2
         private bool ParseBL2(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить BL2...");
+            lstSyntax.Items.Add("Пытаемся распарсить BL2 → DESC; BL3 | OPRT; BL3 | eps ...");
             input = input.Trim();
 
             if (string.IsNullOrEmpty(input))
@@ -561,7 +561,7 @@ namespace recursive_descent_translator_app
         // Разбор BL3
         private bool ParseBL3(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить BL3...");
+            lstSyntax.Items.Add("Пытаемся распарсить BL3 → DESC; BL2 | OPRT; BL2 | eps ...");
             input = input.Trim();
 
             if (string.IsNullOrEmpty(input))
@@ -602,7 +602,7 @@ namespace recursive_descent_translator_app
         // Разбор DESC
         private bool ParseDESC(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить DESC...");
+            lstSyntax.Items.Add("Пытаемся распарсить DESC → TYPE ID ID1...");
 
             // Разбиваем строку на тип и остаток
             string[] parts = input.Split(new[] { ' ' }, 2);
@@ -622,7 +622,7 @@ namespace recursive_descent_translator_app
         // Метод для парсинга типа
         private bool ParseTYPE(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить TYPE...");
+            lstSyntax.Items.Add("Пытаемся распарсить TYPE → int | float | bool ...");
             // Допустимые типы (например, int, bool и т.д.)
             return input == "int" || input == "bool" || input == "float";
         }
@@ -630,7 +630,7 @@ namespace recursive_descent_translator_app
         // Разбор ID1
         private bool ParseID1(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить ID1...");
+            lstSyntax.Items.Add("Пытаемся распарсить ID1 → , ID ID2 | eps ...");
 
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -658,14 +658,14 @@ namespace recursive_descent_translator_app
         // Парсинг ID2
         private bool ParseID2(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить ID2...");
+            lstSyntax.Items.Add("Пытаемся распарсить ID2 → , ID ID1 | eps ...");
             return ParseID1(input); // ID2 имеет ту же структуру
         }
 
         // Разбор OPRT
         private bool ParseOPRT(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить OPRT...");
+            lstSyntax.Items.Add("Пытаемся распарсить OPRT → ASG | COND | FCYC | LOOP | RD | WRT ...");
 
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -687,42 +687,42 @@ namespace recursive_descent_translator_app
             // Попытка распарсить ASG (присваивание)
             if (TryParseAsg(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - присваивание.");
+                lstSyntax.Items.Add("Операция - присваивание (ASG).");
                 return true;
             }
 
             // Попытка распарсить COND (условие)
             if (TryParseCond(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - условие.");
+                lstSyntax.Items.Add("Операция - условие (COND).");
                 return true;
             }
 
             // Попытка распарсить FCYC (цикл for)
             if (TryParseFcyc(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - цикл for.");
+                lstSyntax.Items.Add("Операция - цикл for (FCYC).");
                 return true;
             }
 
             // Попытка распарсить LOOP (цикл while)
             if (TryParseLoop(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - цикл while.");
+                lstSyntax.Items.Add("Операция - цикл while (LOOP).");
                 return true;
             }
 
             // Попытка распарсить RD (чтение)
             if (TryParseRd(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - чтение.");
+                lstSyntax.Items.Add("Операция - чтение (RD).");
                 return true;
             }
 
             // Попытка распарсить WRT (вывод)
             if (TryParseWrt(input, ref lastType, ref lastOperator))
             {
-                lstSyntax.Items.Add("Операция - вывод.");
+                lstSyntax.Items.Add("Операция - вывод (WRT).");
                 return true;
             }
 
@@ -943,7 +943,7 @@ namespace recursive_descent_translator_app
         // Метод для парсинга списка ID, разделённых запятыми
         private bool ParseIDList(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить список ID...");
+            lstSyntax.Items.Add("Пытаемся распарсить список ID (ID, ID, ID, ID и т.д.)...");
 
             string[] parts = input.Split(',');
             foreach (var part in parts)
@@ -961,7 +961,7 @@ namespace recursive_descent_translator_app
         // Метод для парсинга одного ID
         private bool ParseID(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить ID...");
+            lstSyntax.Items.Add("Пытаемся распарсить ID → LETTER LTRDGT1 ...");
 
             if (string.IsNullOrEmpty(input))
             {
@@ -981,7 +981,7 @@ namespace recursive_descent_translator_app
         // Разбор LTRDGT1
         private bool ParseLTRDGT1(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить LTRDGT1...");
+            lstSyntax.Items.Add("Пытаемся распарсить LTRDGT1 → LETTER LTRDGT2 | DIGIT LTRDGT2 | eps ...");
             if (string.IsNullOrEmpty(input))
             {
                 lstSyntax.Items.Add("LTRDGT1 пусто, корректно.");
@@ -994,7 +994,7 @@ namespace recursive_descent_translator_app
         // Разбор LTRDGT2
         private bool ParseLTRDGT2(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить LTRDGT2...");
+            lstSyntax.Items.Add("Пытаемся распарсить LTRDGT2 → LETTER LTRDGT1 | DIGIT LTRDGT1 | eps ...");
             if (string.IsNullOrEmpty(input))
             {
                 lstSyntax.Items.Add("LTRDGT2 пусто, корректно.");
@@ -1337,7 +1337,7 @@ namespace recursive_descent_translator_app
         // Разбор LETTER
         private bool ParseLETTER(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить LETTER...");
+            lstSyntax.Items.Add("Пытаемся распарсить LETTER → A | B | C | ...| X | Y | Z | a | b | c | ... | x | y | z\r\n...");
             // Проверяем, является ли символ буквой
             if (input.Length == 1 && Char.IsLetter(input[0]))
             {
@@ -1353,7 +1353,7 @@ namespace recursive_descent_translator_app
         // Разбор DIGIT
         private bool ParseDIGIT(string input)
         {
-            lstSyntax.Items.Add("Пытаемся распарсить DIGIT...");
+            lstSyntax.Items.Add("Пытаемся распарсить DIGIT → 0|1|2|3|4|5|6|7|8|9 ...");
             // Проверяем, является ли символ цифрой
             if (input.Length == 1 && Char.IsDigit(input[0]))
             {

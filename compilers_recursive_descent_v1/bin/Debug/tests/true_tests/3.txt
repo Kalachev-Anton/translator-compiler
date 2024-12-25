@@ -1,0 +1,4 @@
+{ int a, b, c;
+a ass 10;
+b ass a >= 7 >= 4;
+write (b); }
